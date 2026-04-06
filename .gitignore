@@ -1,0 +1,7 @@
+.env
+.venv/
+**/__pycache__/
+*.pyc
+apps/web/.env
+apps/web/dist/
+apps/web/node_modules/
