@@ -416,7 +416,7 @@ class PersonDetector:
                 ltrb = track.to_ltwh()
                 x1, y1, w, h = [int(v) for v in ltrb]
                 x2, y2 = x1 + w, y1 + h
-                confidence = track.det_conf if hasattr(track, 'det_conf') else 0.0
+                confidence = getattr(track, 'det_conf', 0.0) or 0.0
                 
                 count += 1
                 width = max(x2 - x1, 1)

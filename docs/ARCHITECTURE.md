@@ -76,9 +76,11 @@ The Smart Campus Occupancy and Attendance System is a real-time person detection
 
 #### 1. Authentication Service
 - **JWT-based authentication** with access and refresh tokens
-- **Password strength validation** with configurable requirements
+- **Password strength validation** with configurable requirements (uppercase, lowercase, digit)
+- **Zod validation** on frontend for real-time form validation feedback
 - **Rate limiting** on auth endpoints to prevent brute force attacks
 - **Session management** with automatic token expiration
+- **Token refresh** mechanism with automatic token rotation
 
 #### 2. Detection Service
 - **YOLOv8/YOLOv10 models** for real-time person detection
@@ -122,18 +124,24 @@ The Smart Campus Occupancy and Attendance System is a real-time person detection
 - **Responsive design** for mobile and desktop
 
 #### 2. Authentication UI
-- **User registration** with password strength indicator
+- **User registration** with Zod validation and inline error display
 - **Login form** with session management
-- **Token refresh** handling
+- **Database status indicator** showing MongoDB/Local JSON connection
+- **Token refresh** handling with automatic rotation
 - **Logout functionality**
+- **Real-time validation feedback** with visual error indicators
 
 ### Data Storage
 
 #### MongoDB (Optional)
-- **Connection pooling** with configurable pool sizes
+- **Connection pooling** with configurable pool sizes (max: 50, min: 5)
 - **Automatic indexing** on frequently queried fields
 - **TTL indexes** for session expiration
 - **Replica set support** for high availability
+- **URL encoding** for special characters in credentials (@ → %40, : → %3A)
+- **Automatic fallback** to local JSON storage on connection failure
+- **Async operations** using Motor driver for non-blocking I/O
+- **Startup/shutdown handlers** for proper connection management
 
 #### Local JSON Storage
 - **File-based persistence** for development/testing
