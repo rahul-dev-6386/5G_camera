@@ -1,0 +1,55 @@
+# Convenience docker-compose that references the docker/ folder
+# For production, use docker/docker-compose.production.yml
+
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smart-campus-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - STORAGE_DIR=/app/storage
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - FRONTEND_ORIGIN=http://localhost:5173
+      - LOG_FORMAT=json
+      - LOG_DIR=/app/logs
+      - YOLO_DEVICE=auto
+    volumes:
+      - ./storage:/app/storage
+      - ./logs:/app/logs
+      - ./models:/app/models
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: smart-campus-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=/api
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:7.0
+    container_name: smart-campus-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=smart_campus
+    volumes:
+      - mongodb_data:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
